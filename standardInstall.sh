@@ -23,6 +23,6 @@ wget https://github.com/git/git/archive/v2.5.0.zip
 unzip v2.5.0.zip
 cd git-*
 make prefix=/usr/local all
-#sudo make prefix=/usr/local install
+sudo make prefix=/usr/local install
 #git config --global user.name $username
 #git config --global user.email $emailaddress
