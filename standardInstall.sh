@@ -15,7 +15,7 @@ sudo npm install pm2 -g
 
 #install git
 sudo apt-get update
-sudo apt-get install build-essential libssl-dev libcurl4-gnutls-dev libexpat1-dev gettext unzip
+sudo apt-get install --yes build-essential libssl-dev libcurl4-gnutls-dev libexpat1-dev gettext unzip
 wget https://github.com/git/git/archive/v2.5.0.zip
 unzip v2.5.0.zip
 cd git-*
