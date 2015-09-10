@@ -2,8 +2,8 @@
 username = $1
 emailaddress = $2
 
-#change to home folder
-cd $HOME
+#change user
+su pyrusCloud
 
 #install node
 sudo apt-get update
