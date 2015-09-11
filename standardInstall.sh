@@ -3,7 +3,7 @@ username = $1
 emailaddress = $2
 
 #change user
-#su pyrusCloud
+su - pyrusCloud
 
 #install node
 sudo apt-get update
