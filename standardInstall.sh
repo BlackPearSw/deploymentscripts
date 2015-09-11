@@ -31,3 +31,4 @@ sudo make prefix=/usr/local install
 #configure local npm
 npm set registry https://npm.blackpear.com
 npm set $npma
+npm set always-auth true
