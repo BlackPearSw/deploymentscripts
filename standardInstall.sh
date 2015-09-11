@@ -1,7 +1,7 @@
 #extract parameters
-npmu = $1
-npmp = $2
-npma = $3
+npmu=$1
+npmp=$2
+npma=$3
 
 #change user
 su - pyrusCloud
