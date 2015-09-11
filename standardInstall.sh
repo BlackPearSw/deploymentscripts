@@ -12,9 +12,9 @@ sudo apt-get install -y nodejs
 sudo npm install npm -g
 
 #configure local npm
-su - pyrusCloud -c 'npm set registry https://npm.blackpear.com'
-su - pyrusCloud -c 'npm set $npma'
-su - pyrusCloud -c 'npm set always-auth true'
+su - pyrusCloud -c "npm set registry https://npm.blackpear.com"
+su - pyrusCloud -c "npm set $npma"
+su - pyrusCloud -c "npm set always-auth true"
 
 #install pm2
 sudo npm install pm2 -g
