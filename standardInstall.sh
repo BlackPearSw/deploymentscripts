@@ -1,6 +1,7 @@
 #extract parameters
-username = $1
-emailaddress = $2
+npmu = $1
+npmp = $2
+npma = $3
 
 #change user
 su - pyrusCloud
@@ -24,5 +25,9 @@ unzip v2.5.2.zip
 cd git-*
 make prefix=/usr/local all
 sudo make prefix=/usr/local install
-#git config --global user.name $username
-#git config --global user.email $emailaddress
+#git config --global user.name $npmu
+#git config --global user.email $npmp
+
+#configure local npm
+npm set registry https://npm.blackpear.com
+npm set $npma
