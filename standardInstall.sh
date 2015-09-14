@@ -4,6 +4,7 @@ npmp=$2
 npma=$3
 gitu=$4
 gitp=$5
+uname=$6
 
 #install node
 sudo apt-get update
@@ -14,15 +15,15 @@ sudo apt-get install -y nodejs
 sudo npm install npm -g
 
 #configure local npm
-su - pyrusCloud -c "npm set registry https://npm.blackpear.com"
-su - pyrusCloud -c "npm set $npma"
-su - pyrusCloud -c "npm set always-auth true"
+su - $uname -c "npm set registry https://npm.blackpear.com"
+su - $uname -c "npm set $npma"
+su - $uname -c "npm set always-auth true"
 
 #install nginx
-sudo nginx=stable
-sudo add-apt-repository ppa:nginx/$nginx
-sudo apt-get update
-sudo apt-get install nginx
+#sudo nginx=stable
+#sudo add-apt-repository ppa:nginx/$nginx
+#sudo apt-get update
+#sudo apt-get install nginx
 
 #install pm2
 sudo npm install pm2 -g
@@ -39,14 +40,11 @@ git config --global user.name "$npmu"
 git config --global user.email "$npmp"
 
 #add hosts
-su - pyrusCloud -c "ssh-keyscan -t rsa github.com > ~/.ssh/known_hosts"
-su - pyrusCloud -c "ssh-keyscan -t rsa blackpear.git.beanstalkapp.com >> ~/.ssh/known_hosts"
+su - $uname -c "ssh-keyscan -t rsa github.com > ~/.ssh/known_hosts"
+su - $uname -c "ssh-keyscan -t rsa blackpear.git.beanstalkapp.com >> ~/.ssh/known_hosts"
 
 #create ssh key
-su - pyrusCloud -c "cd ~/.ssh && ssh-keygen -f id_rsa -t rsa -N ''"
-
-su - pyrusCloud -c "echo $gitu > steve"
-su - pyrusCloud -c "echo $gitp >> steve"
+su - $uname -c "cd ~/.ssh && ssh-keygen -f id_rsa -t rsa -N ''"
 
 #add ssh key to github
-su - pyrusCloud -c "curl -u \"$gitu:$gitp\" --data '{\"title\":\"pyrusCloud\",\"key\":\"`cat /home/pyrusCloud/.ssh/id_rsa.pub`\"}' https://api.github.com/user/keys"
+su - $uname -c "curl -u \"$gitu:$gitp\" --data '{\"title\":\"$uname\",\"key\":\"`cat /home/$uname/.ssh/id_rsa.pub`\"}' https://api.github.com/user/keys"
