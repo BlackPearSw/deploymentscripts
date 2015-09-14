@@ -18,6 +18,12 @@ su - pyrusCloud -c "npm set registry https://npm.blackpear.com"
 su - pyrusCloud -c "npm set $npma"
 su - pyrusCloud -c "npm set always-auth true"
 
+#install nginx
+sudo nginx=stable
+sudo add-apt-repository ppa:nginx/$nginx
+sudo apt-get update
+sudo apt-get install nginx
+
 #install pm2
 sudo npm install pm2 -g
 
@@ -39,5 +45,8 @@ su - pyrusCloud -c "ssh-keyscan -t rsa blackpear.git.beanstalkapp.com >> ~/.ssh/
 #create ssh key
 su - pyrusCloud -c "cd ~/.ssh && ssh-keygen -f id_rsa -t rsa -N ''"
 
+su - pyrusCloud -c "echo $gitu > steve"
+su - pyrusCloud -c "echo $gitp >> steve"
+
 #add ssh key to github
-su - pyrusCloud -c "curl -u \"$gitu:$gitp\" --data '{\"title\":\"pyrusCloud\",\"key\":\"`cat ~/.ssh/id_rsa.pub`\"}' https://api.github.com/user/keys"
+su - pyrusCloud -c "curl -u \"$gitu:$gitp\" --data '{\"title\":\"pyrusCloud\",\"key\":\"`cat /home/pyrusCloud/.ssh/id_rsa.pub`\"}' https://api.github.com/user/keys"
