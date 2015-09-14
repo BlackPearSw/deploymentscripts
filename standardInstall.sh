@@ -2,8 +2,8 @@
 npmu=$1
 npmp=$2
 npma=$3
-npmgu=$4
-npmgp=$5
+gitu=$4
+gitp=$5
 
 #install node
 sudo apt-get update
@@ -41,5 +41,5 @@ su - pyrusCloud -c "cd ~/.ssh"
 su - pyrusCloud -c "ssh-keygen -f id_rsa -t rsa -N ''"
 
 #add ssh key to github
-su - pyrusCloud -c "curl -u \"$npmgu:$npmgp\" --data '{\"title\":\"pyrusCloud\",\"key\":\"`cat ~/.ssh/id_rsa.pub`\"}' https://api.github.com/user/keys"
+su - pyrusCloud -c "curl -u \"$gitu:$gitp\" --data '{\"title\":\"pyrusCloud\",\"key\":\"`cat ~/.ssh/id_rsa.pub`\"}' https://api.github.com/user/keys"
 
