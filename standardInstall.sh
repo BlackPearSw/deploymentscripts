@@ -27,6 +27,9 @@ sudo apt-get install --yes nginx
 
 #install pm2
 sudo npm install pm2 -g
+pm2 startup ubuntu -u $uname
+sudo su -c "env PATH=$PATH:/usr/bin pm2 startup ubuntu -u $uname"
+pm2 save
 
 #install git
 sudo apt-get update
