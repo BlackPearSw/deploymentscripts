@@ -20,10 +20,10 @@ su - $uname -c "npm set $npma"
 su - $uname -c "npm set always-auth true"
 
 #install nginx
-#sudo nginx=stable
-#sudo add-apt-repository ppa:nginx/$nginx
-#sudo apt-get update
-#sudo apt-get install nginx
+sudo nginx=stable
+sudo add-apt-repository ppa:nginx/$nginx
+sudo apt-get update
+sudo apt-get install nginx
 
 #install pm2
 sudo npm install pm2 -g
