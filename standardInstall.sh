@@ -29,8 +29,8 @@ unzip v2.5.2.zip
 cd git-*
 make prefix=/usr/local all
 sudo make prefix=/usr/local install
-git config --global user.name $npmu
-git config --global user.email $npmp
+#git config --global user.name "$npmu"
+#git config --global user.email "$npmp"
 
 #add hosts
 su - pyrusCloud -c "ssh-keyscan -t rsa github.com > ~/.ssh/known_hosts"
