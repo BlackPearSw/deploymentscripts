@@ -2,6 +2,8 @@
 npmu=$1
 npmp=$2
 npma=$3
+npmgu=$4
+npmgp=$5
 
 #install node
 sudo apt-get update
@@ -27,5 +29,17 @@ unzip v2.5.2.zip
 cd git-*
 make prefix=/usr/local all
 sudo make prefix=/usr/local install
-#git config --global user.name $npmu
-#git config --global user.email $npmp
+git config --global user.name $npmu
+git config --global user.email $npmp
+
+#add hosts
+su - pyrusCloud -c "ssh-keyscan -t rsa github.com > ~/.ssh/known_hosts"
+su - pyrusCloud -c "ssh-keyscan -t rsa blackpear.git.beanstalkapp.com >> ~/.ssh/known_hosts"
+
+#create ssh key
+su - pyrusCloud -c "cd ~/.ssh"
+su - pyrusCloud -c "ssh-keygen -f id_rsa -t rsa -N ''"
+
+#add ssh key to github
+su - pyrusCloud -c "curl -u \"$npmgu:$npmgp\" --data '{\"title\":\"pyrusCloud\",\"key\":\"`cat ~/.ssh/id_rsa.pub`\"}' https://api.github.com/user/keys"
+
