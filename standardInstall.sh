@@ -5,6 +5,8 @@ npma=$3
 gitu=$4
 gitp=$5
 uname=$6
+beanu=$7
+beanp=$8
 
 #update packages
 sudo apt-get update
@@ -81,3 +83,8 @@ su $uname -c "echo 'Finished creating ssh key' >> $logfile"
 su $uname -c "echo 'Adding ssh key to GitHub' >> $logfile"
 su - $uname -c "curl -u \"$gitu:$gitp\" --data '{\"title\":\"$uname\",\"key\":\"`cat /home/$uname/.ssh/id_rsa.pub`\"}' https://api.github.com/user/keys"
 su $uname -c "echo 'Finished adding ssh key to GitHub' >> $logfile"
+
+#add ssh key to beanstalk
+su $uname -c "echo 'Adding ssh key to Beanstalk' >> $logfile"
+su - $uname -c "curl -H \"Content-Type: application/json\" -u \"$beanu:$beanp\" --data '{\"public_key\": {\"name\": \"Special Name\",\"content\": \"`cat /home/$uname/.ssh/id_rsa.pub`\"}}' https://blackpear.beanstalkapp.com/api/public_keys"
+su $uname -c "echo 'Finished adding ssh key to Gi Beanstalk tHub' >> $logfile"
