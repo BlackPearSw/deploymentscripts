@@ -6,12 +6,14 @@ gitu=$4
 gitp=$5
 uname=$6
 
+#update packages
+sudo apt-get update
+
 #create log folder
 su - $uname -c "mkdir $HOME/logs"
 
 #install node
 su $uname -c 'echo "Installing nodejs" > $HOME/logs/install.log'
-sudo apt-get update
 curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -
 sudo apt-get install -y nodejs
 su $uname -c 'echo "Finished installing nodejs" >> $HOME/logs/install.log'
