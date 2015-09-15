@@ -37,7 +37,6 @@ su $uname -c "echo 'Finished configuring local npm' >> $logfile"
 su $uname -c "echo 'Installing nginx' >> $logfile"
 nginx=stable
 sudo add-apt-repository --yes ppa:nginx/$nginx
-sudo apt-get update
 sudo apt-get install --yes nginx
 su $uname -c "echo 'Finished installing nginx' >> $logfile"
 
@@ -49,15 +48,12 @@ su $uname -c "echo 'Finished installing pm2' >> $logfile"
 #configure pm2 to restart on server reboot
 su $uname -c "echo 'Configuring pm2 for restart' >> $logfile"
 su - $uname -c "pm2 startup ubuntu -u $uname"
-su $uname -c "echo 'pm2 startup step 1 done' >> $logfile"
 sudo su -c "env PATH=$PATH:/usr/bin pm2 startup ubuntu -u $uname"
-su $uname -c "echo 'pm2 startup step 2 done' >> $logfile"
 su - $uname -c "pm2 save"
 su $uname -c "echo 'Finished configuring pm2' >> $logfile"
 
 #install git
 su $uname -c "echo 'Installing GIT' >> $logfile"
-sudo apt-get update
 sudo apt-get install --yes build-essential libssl-dev libcurl4-gnutls-dev libexpat1-dev gettext unzip
 wget https://github.com/git/git/archive/v2.5.2.zip
 unzip v2.5.2.zip
@@ -86,5 +82,5 @@ su $uname -c "echo 'Finished adding ssh key to GitHub' >> $logfile"
 
 #add ssh key to beanstalk
 su $uname -c "echo 'Adding ssh key to Beanstalk' >> $logfile"
-su - $uname -c "curl -H \"Content-Type: application/json\" -u \"$beanu:$beanp\" --data '{\"public_key\": {\"name\": \"Special Name\",\"content\": \"`cat /home/$uname/.ssh/id_rsa.pub`\"}}' https://blackpear.beanstalkapp.com/api/public_keys"
+su - $uname -c "curl -H \"Content-Type: application/json\" -u \"$beanu:$beanp\" --data '{\"public_key\": {\"name\": \"$uname\",\"content\": \"`cat /home/$uname/.ssh/id_rsa.pub`\"}}' https://blackpear.beanstalkapp.com/api/public_keys"
 su $uname -c "echo 'Finished adding ssh key to Gi Beanstalk tHub' >> $logfile"
