@@ -50,6 +50,7 @@ su $uname -c "echo 'Configuring pm2 for restart' >> $logfile"
 su - $uname -c "pm2 startup ubuntu -u $uname"
 sudo su -c "env PATH=$PATH:/usr/bin pm2 startup ubuntu -u $uname"
 su - $uname -c "pm2 save"
+sudo sed -i "/PM2_HOME/s/root/home\/$uname/" /etc/init.d/pm2-init.sh
 su $uname -c "echo 'Finished configuring pm2' >> $logfile"
 
 #install git
