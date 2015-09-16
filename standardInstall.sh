@@ -8,15 +8,13 @@ uname=$6
 beanu=$7
 beanp=$8
 
-#update packages
-sudo apt-get update
-
 #create log folder
 logfile=/home/$uname/logs/install.log
 su - $uname -c "mkdir /home/$uname/logs"
 
 #install node
 su $uname -c "echo 'Installing nodejs' > $logfile"
+sudo apt-get update
 curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -
 sudo apt-get install -y nodejs
 su $uname -c "echo 'Finished installing nodejs' >> $logfile"
@@ -37,6 +35,7 @@ su $uname -c "echo 'Finished configuring local npm' >> $logfile"
 su $uname -c "echo 'Installing nginx' >> $logfile"
 nginx=stable
 sudo add-apt-repository --yes ppa:nginx/$nginx
+sudo apt-get update
 sudo apt-get install --yes nginx
 su $uname -c "echo 'Finished installing nginx' >> $logfile"
 
@@ -55,6 +54,7 @@ su $uname -c "echo 'Finished configuring pm2' >> $logfile"
 
 #install git
 su $uname -c "echo 'Installing GIT' >> $logfile"
+sudo apt-get update
 sudo apt-get install --yes build-essential libssl-dev libcurl4-gnutls-dev libexpat1-dev gettext unzip
 wget https://github.com/git/git/archive/v2.5.2.zip
 unzip v2.5.2.zip
@@ -84,4 +84,4 @@ su $uname -c "echo 'Finished adding ssh key to GitHub' >> $logfile"
 #add ssh key to beanstalk
 su $uname -c "echo 'Adding ssh key to Beanstalk' >> $logfile"
 su - $uname -c "curl -H \"Content-Type: application/json\" -u \"$beanu:$beanp\" --data '{\"public_key\": {\"name\": \"$uname\",\"content\": \"`cat /home/$uname/.ssh/id_rsa.pub`\"}}' https://blackpear.beanstalkapp.com/api/public_keys"
-su $uname -c "echo 'Finished adding ssh key to Gi Beanstalk tHub' >> $logfile"
+su $uname -c "echo 'Finished adding ssh key to Beanstalk' >> $logfile"
