@@ -10,14 +10,14 @@ beanp=$8
 
 #create log folder
 logfile=/home/$uname/logs/install.log
-mkdir /home/$uname/logs
+su - $uname -c "mkdir /home/$uname/logs"
 
 #install node
-echo 'Installing nodejs' > $logfile
+su $uname -c "echo 'Installing nodejs' > $logfile"
 sudo apt-get update
 curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -
 sudo apt-get install -y nodejs
-echo 'Finished installing nodejs' >> $logfile
+su $uname -c "echo 'Finished installing nodejs' >> $logfile"
 
 #update npm
 su $uname -c "echo 'Updating npm' >> $logfile"
