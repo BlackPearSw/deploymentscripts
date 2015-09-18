@@ -17,3 +17,6 @@ sudo apt-get install -y mongodb-org
 
 #update config
 sudo sed -i "/bind_ip/s/127.0.0.1/$privip/" /etc/mongod.conf
+
+#restart mongodb
+sudo service mongod restart
