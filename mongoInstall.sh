@@ -1,3 +1,5 @@
+privip=$1
+
 # Configure mongodb.list file with the correct location
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
 echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
@@ -12,3 +14,6 @@ sudo apt-get -y update
 
 #Install Mongo DB
 sudo apt-get install -y mongodb-org
+
+#update config
+sudo sed -i "/bind_ip/s/127.0.0.1/$privip/" /etc/mongod.conf
