@@ -8,6 +8,13 @@ uname=$6
 beanu=$7
 beanp=$8
 
+#upgrade server install
+sudo apt-get update && sudo apt-get -y upgrade
+
+#switch auto updates on for security updates
+sudo apt-get install -y unattended-upgrades
+sudo sed -i -e '$a\APT::Periodic::Unattended-Upgrade "1";' /etc/apt/apt.conf.d/10periodic
+
 #create log folder
 logfile=/home/$uname/logs/install.log
 su - $uname -c "mkdir /home/$uname/logs"
