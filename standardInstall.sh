@@ -19,6 +19,19 @@ sudo sed -i -e '$a\APT::Periodic::Unattended-Upgrade "1";' /etc/apt/apt.conf.d/1
 logfile=/home/$uname/logs/install.log
 su - $uname -c "mkdir /home/$uname/logs"
 
+#install git
+su $uname -c "echo 'Installing GIT' >> $logfile"
+sudo apt-get update
+sudo apt-get install --yes build-essential libssl-dev libcurl4-gnutls-dev libexpat1-dev gettext unzip
+wget https://github.com/git/git/archive/v2.5.2.zip
+unzip v2.5.2.zip
+cd git-*
+make prefix=/usr/local all
+sudo make prefix=/usr/local install
+git config --global user.name "$npmu"
+git config --global user.email "$npmp"
+su $uname -c "echo 'Finished installing GIT' >> $logfile"
+
 #install node
 su $uname -c "echo 'Installing nodejs' > $logfile"
 sudo apt-get update
@@ -58,19 +71,6 @@ sudo su -c "env PATH=$PATH:/usr/bin pm2 startup ubuntu -u $uname"
 su - $uname -c "pm2 save"
 sudo sed -i "/PM2_HOME/s/root/home\/$uname/" /etc/init.d/pm2-init.sh
 su $uname -c "echo 'Finished configuring pm2' >> $logfile"
-
-#install git
-su $uname -c "echo 'Installing GIT' >> $logfile"
-sudo apt-get update
-sudo apt-get install --yes build-essential libssl-dev libcurl4-gnutls-dev libexpat1-dev gettext unzip
-wget https://github.com/git/git/archive/v2.5.2.zip
-unzip v2.5.2.zip
-cd git-*
-make prefix=/usr/local all
-sudo make prefix=/usr/local install
-git config --global user.name "$npmu"
-git config --global user.email "$npmp"
-su $uname -c "echo 'Finished installing GIT' >> $logfile"
 
 #add hosts
 su $uname -c "echo 'Adding known hosts' >> $logfile"
