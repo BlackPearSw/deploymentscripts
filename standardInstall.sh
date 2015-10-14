@@ -7,6 +7,8 @@ gitp=$5
 uname=$6
 beanu=$7
 beanp=$8
+rabbit=$9
+nginx=${10}
 
 #upgrade server install
 sudo apt-get update && sudo apt-get -y upgrade
@@ -33,7 +35,7 @@ git config --global user.email "$npmp"
 su $uname -c "echo 'Finished installing GIT' >> $logfile"
 
 #install node
-su $uname -c "echo 'Installing nodejs' > $logfile"
+su $uname -c "echo 'Installing nodejs' >> $logfile"
 sudo apt-get update
 curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -
 sudo apt-get install -y nodejs
@@ -52,12 +54,15 @@ su - $uname -c "npm set always-auth true"
 su $uname -c "echo 'Finished configuring local npm' >> $logfile"
 
 #install nginx
-su $uname -c "echo 'Installing nginx' >> $logfile"
-nginx=stable
-sudo add-apt-repository --yes ppa:nginx/$nginx
-sudo apt-get update
-sudo apt-get install --yes nginx
-su $uname -c "echo 'Finished installing nginx' >> $logfile"
+if [ "$nginx" = "y" ]
+then
+	su $uname -c "echo 'Installing nginx' >> $logfile"
+	nginx=stable
+	sudo add-apt-repository --yes ppa:nginx/$nginx
+	sudo apt-get update
+	sudo apt-get install --yes nginx
+	su $uname -c "echo 'Finished installing nginx' >> $logfile"
+fi
 
 #install pm2
 su $uname -c "echo 'Installing pm2' >> $logfile"
@@ -71,6 +76,18 @@ sudo su -c "env PATH=$PATH:/usr/bin pm2 startup ubuntu -u $uname"
 su - $uname -c "pm2 save"
 sudo sed -i "/PM2_HOME/s/root/home\/$uname/" /etc/init.d/pm2-init.sh
 su $uname -c "echo 'Finished configuring pm2' >> $logfile"
+
+#install RabbitMQ if required
+if [ "$rabbit" = "y" ]
+then
+	su $uname -c "echo 'Installing RabbitMQ >> $logfile"
+	sudo bash -c 'echo "deb http://www.rabbitmq.com/debian testing main" >> /etc/apt/sources.list'
+	wget https://www.rabbitmq.com/rabbitmq-signing-key-public.asc
+	sudo apt-key add rabbitmq-signing-key-public.asc
+	sudo apt-get update
+	sudo apt-get install -y rabbitmq-server
+	su $uname -c "echo 'Completed installing RabbitMQ >> $logfile"
+fi
 
 #add hosts
 su $uname -c "echo 'Adding known hosts' >> $logfile"
