@@ -78,7 +78,6 @@ sudo sed -i "/PM2_HOME/s/root/home\/$uname/" /etc/init.d/pm2-init.sh
 su $uname -c "echo 'Finished configuring pm2' >> $logfile"
 
 #install RabbitMQ if required
-su $uname -c "echo $rabbit >> $logfile"
 if [ "$rabbit" = "y" ]
 then
 	su $uname -c "echo 'Installing RabbitMQ' >> $logfile"
