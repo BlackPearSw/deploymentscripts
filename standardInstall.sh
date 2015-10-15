@@ -9,6 +9,10 @@ beanu=$7
 beanp=$8
 rabbit=$9
 nginx=${10}
+keymet=${11}
+pm2pr=${12}
+pm2pu=${13}
+host=${14}
 
 #upgrade server install
 sudo apt-get update && sudo apt-get -y upgrade
@@ -76,6 +80,14 @@ sudo su -c "env PATH=$PATH:/usr/bin pm2 startup ubuntu -u $uname"
 su - $uname -c "pm2 save"
 sudo sed -i "/PM2_HOME/s/root/home\/$uname/" /etc/init.d/pm2-init.sh
 su $uname -c "echo 'Finished configuring pm2' >> $logfile"
+
+#link pm2 to keymetrics if required
+if [ "$keymet" = "y" ]
+then
+	su $uname -c "echo 'Linking pm2 to keymetrics' >> $logfile"
+	su - $uname -c "pm2 link $pm2pr $pm2pu $host"
+	su $uname -c "echo 'Finished linking pm2 to keymetrics' >> $logfile"
+fi
 
 #install RabbitMQ if required
 if [ "$rabbit" = "y" ]
