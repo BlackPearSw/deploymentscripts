@@ -21,19 +21,6 @@ sudo sed -i -e '$a\APT::Periodic::Unattended-Upgrade "1";' /etc/apt/apt.conf.d/1
 logfile=/home/$uname/logs/install.log
 su - $uname -c "mkdir /home/$uname/logs"
 
-#install RabbitMQ if required
-su $uname -c "echo $rabbit >> $logfile"
-if [ "$rabbit" = "y" ]
-then
-	su $uname -c "echo 'Installing RabbitMQ >> $logfile"
-	sudo bash -c 'echo "deb http://www.rabbitmq.com/debian testing main" >> /etc/apt/sources.list'
-	wget https://www.rabbitmq.com/rabbitmq-signing-key-public.asc
-	sudo apt-key add rabbitmq-signing-key-public.asc
-	sudo apt-get update
-	sudo apt-get install -y rabbitmq-server
-	su $uname -c "echo 'Completed installing RabbitMQ >> $logfile"
-fi
-
 #install git
 su $uname -c "echo 'Installing GIT' >> $logfile"
 sudo apt-get update
@@ -94,13 +81,13 @@ su $uname -c "echo 'Finished configuring pm2' >> $logfile"
 su $uname -c "echo $rabbit >> $logfile"
 if [ "$rabbit" = "y" ]
 then
-	su $uname -c "echo 'Installing RabbitMQ >> $logfile"
+	su $uname -c "echo 'Installing RabbitMQ' >> $logfile"
 	sudo bash -c 'echo "deb http://www.rabbitmq.com/debian testing main" >> /etc/apt/sources.list'
 	wget https://www.rabbitmq.com/rabbitmq-signing-key-public.asc
 	sudo apt-key add rabbitmq-signing-key-public.asc
 	sudo apt-get update
 	sudo apt-get install -y rabbitmq-server
-	su $uname -c "echo 'Completed installing RabbitMQ >> $logfile"
+	su $uname -c "echo 'Completed installing RabbitMQ' >> $logfile"
 fi
 
 #add hosts
