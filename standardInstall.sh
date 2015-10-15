@@ -13,6 +13,7 @@ keymet=${11}
 pm2pr=${12}
 pm2pu=${13}
 host=${14}
+rabbitu=${15}
 
 #upgrade server install
 sudo apt-get update && sudo apt-get -y upgrade
@@ -57,17 +58,6 @@ su - $uname -c "npm set $npma"
 su - $uname -c "npm set always-auth true"
 su $uname -c "echo 'Finished configuring local npm' >> $logfile"
 
-#install nginx
-if [ "$nginx" = "y" ]
-then
-	su $uname -c "echo 'Installing nginx' >> $logfile"
-	nginx=stable
-	sudo add-apt-repository --yes ppa:nginx/$nginx
-	sudo apt-get update
-	sudo apt-get install --yes nginx
-	su $uname -c "echo 'Finished installing nginx' >> $logfile"
-fi
-
 #install pm2
 su $uname -c "echo 'Installing pm2' >> $logfile"
 sudo npm install pm2 -g
@@ -81,12 +71,15 @@ su - $uname -c "pm2 save"
 sudo sed -i "/PM2_HOME/s/root/home\/$uname/" /etc/init.d/pm2-init.sh
 su $uname -c "echo 'Finished configuring pm2' >> $logfile"
 
-#link pm2 to keymetrics if required
-if [ "$keymet" = "y" ]
+#install nginx
+if [ "$nginx" = "y" ]
 then
-	su $uname -c "echo 'Linking pm2 to keymetrics' >> $logfile"
-	su - $uname -c "pm2 link $pm2pr $pm2pu $host"
-	su $uname -c "echo 'Finished linking pm2 to keymetrics' >> $logfile"
+	su $uname -c "echo 'Installing nginx' >> $logfile"
+	nginx=stable
+	sudo add-apt-repository --yes ppa:nginx/$nginx
+	sudo apt-get update
+	sudo apt-get install --yes nginx
+	su $uname -c "echo 'Finished installing nginx' >> $logfile"
 fi
 
 #install RabbitMQ if required
@@ -98,7 +91,17 @@ then
 	sudo apt-key add rabbitmq-signing-key-public.asc
 	sudo apt-get update
 	sudo apt-get install -y rabbitmq-server
+	sudo rabbitmqctl add_user blackpear $rabbitu
+	sudo rabbitmq-plugins enable rabbitmq_management
 	su $uname -c "echo 'Completed installing RabbitMQ' >> $logfile"
+fi
+
+#link pm2 to keymetrics if required
+if [ "$keymet" = "y" ]
+then
+	su $uname -c "echo 'Linking pm2 to keymetrics' >> $logfile"
+	su - $uname -c "pm2 link $pm2pr $pm2pu $host"
+	su $uname -c "echo 'Finished linking pm2 to keymetrics' >> $logfile"
 fi
 
 #add hosts
