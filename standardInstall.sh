@@ -92,6 +92,7 @@ then
 	sudo apt-get update
 	sudo apt-get install -y rabbitmq-server
 	sudo rabbitmqctl add_user blackpear $rabbitu
+	sudo rabbitmqctl set_user_tags blackpear administrator
 	sudo rabbitmq-plugins enable rabbitmq_management
 	su $uname -c "echo 'Completed installing RabbitMQ' >> $logfile"
 fi
