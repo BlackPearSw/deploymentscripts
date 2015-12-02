@@ -26,6 +26,10 @@ sudo sed -i -e '$a\APT::Periodic::Unattended-Upgrade "1";' /etc/apt/apt.conf.d/1
 logfile=/home/$uname/logs/install.log
 su - $uname -c "mkdir /home/$uname/logs"
 
+#install ntp
+sudo apt-get update
+sudo apt-get install --yes ntp
+
 #install git
 su $uname -c "echo 'Installing GIT' >> $logfile"
 sudo apt-get update

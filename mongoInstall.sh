@@ -7,6 +7,10 @@ sudo apt-get update && sudo apt-get -y upgrade
 sudo apt-get install -y unattended-upgrades
 sudo sed -i -e '$a\APT::Periodic::Unattended-Upgrade "1";' /etc/apt/apt.conf.d/10periodic
 
+#install ntp
+sudo apt-get update
+sudo apt-get install --yes ntp
+
 # Configure mongodb.list file with the correct location
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
 echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
