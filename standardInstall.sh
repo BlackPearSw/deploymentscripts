@@ -1,19 +1,17 @@
 #extract parameters
-npmu=$1
-npmp=$2
-npma=$3
-gitu=$4
-gitp=$5
-uname=$6
-beanu=$7
-beanp=$8
-rabbit=$9
-nginx=${10}
-keymet=${11}
-pm2pr=${12}
-pm2pu=${13}
-host=${14}
-rabbitu=${15}
+npma=$1
+gitu=$2
+gitp=$3
+uname=$4
+beanu=$5
+beanp=$6
+rabbit=$7
+nginx=$8
+keymet=$9
+pm2pr=${10}
+pm2pu=${11}
+host=${12}
+rabbitu=${13}
 
 #upgrade server install
 sudo apt-get update && sudo apt-get -y upgrade
@@ -39,8 +37,6 @@ unzip v2.5.2.zip
 cd git-*
 make prefix=/usr/local all
 sudo make prefix=/usr/local install
-git config --global user.name "$npmu"
-git config --global user.email "$npmp"
 su $uname -c "echo 'Finished installing GIT' >> $logfile"
 
 #install node
