@@ -27,14 +27,14 @@ sudo npm install npm -g
 #install pm2
 sudo npm install pm2 -g
 
+#Install pm2 server monitor
+pm2 install pm2-server-monit
+
 #link pm2 to keymetrics if required
 if [ "$keymet" = "y" ]
 then
 	su - $uname -c "pm2 link $pm2pr $pm2pu $host"
 fi
-
-#Install pm2 server monitor
-pm2 install pm2-server-monit
 
 # Configure mongodb.list file with the correct location
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
