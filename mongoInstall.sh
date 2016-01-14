@@ -1,4 +1,9 @@
 privip=$1
+keymet=$2
+pm2pr=$3
+pm2pu=$4
+uname=$5
+host=$6
 
 #upgrade server install
 sudo apt-get update && sudo apt-get -y upgrade
@@ -21,6 +26,12 @@ sudo npm install npm -g
 
 #install pm2
 sudo npm install pm2 -g
+
+#link pm2 to keymetrics if required
+if [ "$keymet" = "y" ]
+then
+	su - $uname -c "pm2 link $pm2pr $pm2pu $host"
+fi
 
 #Install pm2 server monitor
 pm2 install pm2-server-monit
