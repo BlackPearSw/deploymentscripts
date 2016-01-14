@@ -66,10 +66,13 @@ su $uname -c "echo 'Finished installing pm2' >> $logfile"
 #configure pm2 to restart on server reboot
 su $uname -c "echo 'Configuring pm2 for restart' >> $logfile"
 su - $uname -c "pm2 startup ubuntu -u $uname"
-sudo su -c "env PATH=$PATH:/usr/bin pm2 startup ubuntu -u $uname"
+sudo su -c "env PATH=$PATH:/usr/bin pm2 startup ubuntu -u $uname --hp /home/$uname"
 su - $uname -c "pm2 save"
-sudo sed -i "/PM2_HOME/s/root/home\/$uname/" /etc/init.d/pm2-init.sh
+#sudo sed -i "/PM2_HOME/s/root/home\/$uname/" /etc/init.d/pm2-init.sh
 su $uname -c "echo 'Finished configuring pm2' >> $logfile"
+
+#Install pm2 server monitor
+pm2 install pm2-server-monit
 
 #install nginx
 if [ "$nginx" = "y" ]
@@ -95,6 +98,7 @@ then
 	sudo rabbitmqctl set_user_tags blackpear administrator
 	sudo rabbitmqctl set_permissions blackpear ".*" ".*" ".*"
 	sudo rabbitmq-plugins enable rabbitmq_management
+	pm2 install pm2-rabbitmq
 	su $uname -c "echo 'Completed installing RabbitMQ' >> $logfile"
 fi
 

@@ -11,6 +11,20 @@ sudo sed -i -e '$a\APT::Periodic::Unattended-Upgrade "1";' /etc/apt/apt.conf.d/1
 sudo apt-get update
 sudo apt-get install --yes ntp
 
+#install node
+sudo apt-get update
+curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -
+sudo apt-get install -y nodejs
+
+#update npm
+sudo npm install npm -g
+
+#install pm2
+sudo npm install pm2 -g
+
+#Install pm2 server monitor
+pm2 install pm2-server-monit
+
 # Configure mongodb.list file with the correct location
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
 echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
@@ -31,3 +45,9 @@ sudo sed -i "/bindIp/s/127.0.0.1/$privip/" /etc/mongod.conf
 
 #restart mongodb
 sudo service mongod restart
+
+#install pm2 mongodb module
+pm2 install pm2-mongodb
+
+#update pm2 mongodb ip
+pm2 set pm2-mongodb:ip "$privip"
