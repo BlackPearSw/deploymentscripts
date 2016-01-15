@@ -54,12 +54,11 @@ then
 	#Install pm2 server monitor
 	su - $uname -c "pm2 install pm2-server-monit"
 
-	#update pm2 mongodb ip
-	su - $uname -c "pm2 set pm2-mongodb:ip $privip"
-
 	#install pm2 mongodb module
 	su - $uname -c "pm2 install pm2-mongodb"
-	su - $uname -c "pm2 restart pm2-mongodb"
+
+	#update pm2 mongodb ip
+	su - $uname -c "pm2 set pm2-mongodb:ip $privip"
 
 	#link pm2 to key metrics
 	su - $uname -c "pm2 link $pm2pr $pm2pu $host"
