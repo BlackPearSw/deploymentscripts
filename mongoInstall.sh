@@ -28,7 +28,7 @@ sudo npm install npm -g
 sudo npm install pm2 -g
 
 #Install pm2 server monitor
-pm2 install pm2-server-monit
+#pm2 install pm2-server-monit
 
 #link pm2 to keymetrics if required
 if [ "$keymet" = "y" ]
@@ -58,7 +58,7 @@ sudo sed -i "/bindIp/s/127.0.0.1/$privip/" /etc/mongod.conf
 sudo service mongod restart
 
 #install pm2 mongodb module
-pm2 install pm2-mongodb
+#pm2 install pm2-mongodb
 
 #update pm2 mongodb ip
-pm2 set pm2-mongodb:ip "$privip"
+#pm2 set pm2-mongodb:ip "$privip"
