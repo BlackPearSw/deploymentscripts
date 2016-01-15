@@ -72,7 +72,7 @@ su - $uname -c "pm2 save"
 su $uname -c "echo 'Finished configuring pm2' >> $logfile"
 
 #Install pm2 server monitor
-pm2 install pm2-server-monit
+su $uname -c "pm2 install pm2-server-monit"
 
 #install nginx
 if [ "$nginx" = "y" ]
@@ -98,7 +98,7 @@ then
 	sudo rabbitmqctl set_user_tags blackpear administrator
 	sudo rabbitmqctl set_permissions blackpear ".*" ".*" ".*"
 	sudo rabbitmq-plugins enable rabbitmq_management
-	pm2 install pm2-rabbitmq
+	su $uname -c "pm2 install pm2-rabbitmq"
 	su $uname -c "echo 'Completed installing RabbitMQ' >> $logfile"
 fi
 
