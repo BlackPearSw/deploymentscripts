@@ -48,17 +48,20 @@ su - $uname -c "pm2 install pm2-server-monit"
 #install pm2 mongodb module
 su - $uname -c "pm2 install pm2-mongodb"
 
+#update pm2 mongodb ip
+su - $uname -c "pm2 set pm2-mongodb:ip $privip"
+
 #update mongo config
 sudo sed -i "/bindIp/s/127.0.0.1/$privip/" /etc/mongod.conf
 
 #restart mongodb
 sudo service mongod restart
 
-#update pm2 mongodb ip
-su - $uname -c "pm2 set pm2-mongodb:ip $privip"
+#restart pm2-mongodb
+su - $uname -c "pm2 restart pm2-mongodb"
 
 #link pm2 to keymetrics
-if [ "$keymet" = "y" ]
-then
-	su - $uname -c "pm2 link $pm2pr $pm2pu $host"
-fi
+#if [ "$keymet" = "y" ]
+#then
+#	su - $uname -c "pm2 link $pm2pr $pm2pu $host"
+#fi
