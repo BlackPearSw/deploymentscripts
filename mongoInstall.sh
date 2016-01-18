@@ -39,12 +39,6 @@ sudo apt-get -y update
 #Install Mongo DB
 sudo apt-get install -y mongodb-org
 
-#update config
-sudo sed -i "/bindIp/s/127.0.0.1/$privip/" /etc/mongod.conf
-
-#restart mongodb
-sudo service mongod restart
-
 #link pm2 to keymetrics and install required pm2 components if required
 if [ "$keymet" = "y" ]
 then
@@ -60,9 +54,12 @@ then
 	#update pm2 mongodb ip
 	su - $uname -c "pm2 set pm2-mongodb:ip $privip"
 
-	#purge pm2 logs
-	su - $uname -c "pm2 flush"
-
 	#link pm2 to key metrics
 	su - $uname -c "pm2 link $pm2pr $pm2pu $host"
 fi
+
+#update mongo config
+sudo sed -i "/bindIp/s/127.0.0.1/$privip/" /etc/mongod.conf
+
+#restart mongodb
+sudo service mongod restart
