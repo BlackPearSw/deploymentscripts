@@ -60,8 +60,8 @@ su - $uname -c "pm2 set pm2-mongodb:ip $privip"
 #restart pm2-mongodb
 su - $uname -c "pm2 restart pm2-mongodb"
 
-#link pm2 to keymetrics
-#if [ "$keymet" = "y" ]
-#then
-#	su - $uname -c "pm2 link $pm2pr $pm2pu $host"
-#fi
+link pm2 to keymetrics
+if [ "$keymet" = "y" ]
+then
+	su - $uname -c "pm2 link $pm2pr $pm2pu $host"
+fi
