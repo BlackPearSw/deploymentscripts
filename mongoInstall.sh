@@ -60,6 +60,9 @@ then
 	#update pm2 mongodb ip
 	su - $uname -c "pm2 set pm2-mongodb:ip $privip"
 
+	#purge pm2 logs
+	su - $uname -c "pm2 flush"
+
 	#link pm2 to key metrics
 	su - $uname -c "pm2 link $pm2pr $pm2pu $host"
 fi
