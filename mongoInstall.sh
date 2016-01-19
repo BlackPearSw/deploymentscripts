@@ -51,14 +51,8 @@ sudo npm install pm2 -g
 #Install pm2 server monitor
 su - $uname -c "pm2 install pm2-server-monit"
 
-#install pm2 mongodb module
-su - $uname -c "pm2 install pm2-mongodb"
-
 #update pm2 mongodb ip
 su - $uname -c "pm2 set pm2-mongodb:ip $privip"
-
-#restart pm2-mongodb
-su - $uname -c "pm2 restart pm2-mongodb"
 
 #link pm2 to keymetrics
 if [ "$keymet" = "y" ]
