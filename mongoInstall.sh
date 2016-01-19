@@ -55,7 +55,7 @@ sudo service mongod restart
 su - $uname -c "pm2 install pm2-mongodb"
 
 #wait for pm2-mongodb to settle down
-su - $uname -c "sleep 10"
+su - $uname -c "sleep 15"
 
 #update pm2 mongodb ip
 su - $uname -c "pm2 set pm2-mongodb:ip $privip"
@@ -63,11 +63,14 @@ su - $uname -c "pm2 set pm2-mongodb:ip $privip"
 #restart pm2-mongodb
 su - $uname -c "pm2 restart pm2-mongodb"
 
+#wait for pm2-mongodb to settle down
+su - $uname -c "sleep 10"
+
 #purge pm2 error log
 su - $uname -c "pm2 flush"
 
 #link pm2 to keymetrics
-#if [ "$keymet" = "y" ]
-#then
-#	su - $uname -c "pm2 link $pm2pr $pm2pu $host"
-#fi
+if [ "$keymet" = "y" ]
+then
+	su - $uname -c "pm2 link $pm2pr $pm2pu $host"
+fi
