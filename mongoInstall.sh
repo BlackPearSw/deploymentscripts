@@ -39,17 +39,17 @@ sudo apt-get -y update
 #Install Mongo DB
 sudo apt-get install -y mongodb-org
 
-#install pm2
-sudo npm install pm2 -g
-
-#Install pm2 server monitor
-su - $uname -c "pm2 install pm2-server-monit"
-
 #update mongo config
 sudo sed -i "/bindIp/s/127.0.0.1/$privip/" /etc/mongod.conf
 
 #restart mongodb
 sudo service mongod restart
+
+#install pm2
+sudo npm install pm2 -g
+
+#Install pm2 server monitor
+su - $uname -c "pm2 install pm2-server-monit"
 
 #install pm2 mongodb module
 su - $uname -c "pm2 install pm2-mongodb"
@@ -57,14 +57,11 @@ su - $uname -c "pm2 install pm2-mongodb"
 #update pm2 mongodb ip
 su - $uname -c "pm2 set pm2-mongodb:ip $privip"
 
-#wait for pm2-mongodb to settle down
-su - $uname -c "sleep 15"
-
 #restart pm2-mongodb
 su - $uname -c "pm2 restart pm2-mongodb"
 
 #link pm2 to keymetrics
-#if [ "$keymet" = "y" ]
-#then
-#	su - $uname -c "pm2 link $pm2pr $pm2pu $host"
-#fi
+if [ "$keymet" = "y" ]
+then
+	su - $uname -c "pm2 link $pm2pr $pm2pu $host"
+fi
