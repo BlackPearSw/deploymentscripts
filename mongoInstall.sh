@@ -58,8 +58,9 @@ p
 w
 "|sudo fdisk $hdd
 sudo mkfs -t ext4 /dev/sdc1
-sudo mkdir /datadrive/mongodb
+sudo mkdir /datadrive
 sudo mount /dev/sdc1 /datadrive
+sudo mkdir /datadrive/mongodb
 sudo chown mongodb:mongodb /datadrive/mongodb
 
 #update mongo config
