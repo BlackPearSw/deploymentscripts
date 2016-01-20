@@ -71,7 +71,7 @@ sudo sed -i "/dbPath/s/var\/lib/datadrive/" /etc/mongod.conf
 sudo service mongod restart
 
 #link pm2 to keymetrics
-#if [ "$keymet" = "y" ]
-#then
-#	su - $uname -c "pm2 link $pm2pr $pm2pu $host"
-#fi
+if [ "$keymet" = "y" ]
+then
+	su - $uname -c "pm2 link $pm2pr $pm2pu $host"
+fi
