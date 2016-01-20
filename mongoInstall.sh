@@ -50,7 +50,7 @@ su - $uname -c "pm2 set pm2-mongodb:ip $privip"
 
 #mount data disk
 hdd="/dev/sdc"
-echo "n
+sudo echo "n
 p
 1
 
