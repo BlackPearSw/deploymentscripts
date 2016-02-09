@@ -105,11 +105,6 @@ sudo adduser --system --group --shell /bin/bash --disabled-password autossh
 su - autossh -c "mkdir -p ~/.ssh && chmod 700 ~/.ssh && touch ~/.ssh/authorized_keys"
 sudo chsh --shell /bin/false autossh
 
-#sudo adduser --system --group --shell /bin/false --disabled-password autossh
-#sudo mkdir -p /home/autossh/.ssh
-#sudo touch /home/autossh/.ssh/authorized_keys
-#sudo chown -R autossh:autossh /home/autossh/.ssh
-
 #link pm2 to keymetrics
 if [ "$keymet" = "y" ]
 then
