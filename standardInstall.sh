@@ -26,6 +26,8 @@ then
 	sudo apt-get update
 	sudo apt-get install --yes sshpass
 	sudo adduser --system --group --shell /bin/bash --disabled-password autossh
+	su - autossh -c "mkdir -p ~/.ssh"
+	su - autopssh -c "chmod 700 ~/.ssh"
 	su - autossh -c "ssh-keyscan -t rsa github.com > ~/.ssh/known_hosts"
 	sudo cat /home/autossh/.ssh/id_rsa.pub | sshpass -p $dbpw ssh $dbuser@$dbhost "sudo su -c 'cat >> /home/autossh/.ssh/authorized_keys'"
 	sudo chsh --shell /bin/false autossh
