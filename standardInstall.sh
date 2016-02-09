@@ -35,16 +35,16 @@ then
 	#create autossh.sh script
 	sudo apt-get update
 	sudo apt-get install --yes autossh
-	sudo su -c "cat << EOF > /etc/init/autossh.sh
-	description \"Start autossh to control ssh tunnel\"
-	author \"Steve Reynolds\"
-	start on (local-filesystems and net-device-up IFACE=eth0)
-	stop on runlevel [016]
-	setuid autossh
-	respawn
-	respawn limit 5 60
-	exec autossh -M 0 -N -o \"ServerAliveInterval 60\" -o \"ServerAliveCountMax 3\" -L $sshport:localhost:27017 -i /home/autossh/.ssh/id_rsa autossh@$dbhost
-	EOF"
+	sudo su -c "cat << EOF > /etc/init/autossh.conf
+description \"Start autossh to control ssh tunnel\"
+author \"Steve Reynolds\"
+start on (local-filesystems and net-device-up IFACE=eth0)
+stop on runlevel [016]
+setuid autossh
+respawn
+respawn limit 5 60
+exec autossh -M 0 -N -o \"ServerAliveInterval 60\" -o \"ServerAliveCountMax 3\" -L $sshport:localhost:27017 -i /home/autossh/.ssh/id_rsa autossh@$dbhost
+EOF"
 	sudo service autossh start
 fi
 
