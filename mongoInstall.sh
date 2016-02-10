@@ -2,8 +2,7 @@ privip=$1
 keymet=$2
 pm2pr=$3
 pm2pu=$4
-uname=$5
-host=$6
+host=$5
 
 #upgrade server install
 sudo apt-get update && sudo apt-get -y upgrade
