@@ -2,21 +2,20 @@
 npma=$1
 gitu=$2
 gitp=$3
-uname=$4
-beanu=$5
-beanp=$6
-rabbit=$7
-nginx=$8
-keymet=$9
-pm2pr=${10}
-pm2pu=${11}
-host=${12}
-rabbitu=${13}
-tunnel=${14}
-dbhost=${15}
-dbuser=${16}
-dbpw=${17}
-sshport=${18}
+beanu=$4
+beanp=$5
+rabbit=$6
+nginx=$7
+keymet=$8
+pm2pr=$9
+pm2pu=${10}
+host=${11}
+rabbitu=${12}
+tunnel=${13}
+dbhost=${14}
+dbuser=${15}
+dbpw=${16}
+sshport=${17}
 
 #upgrade server install
 sudo apt-get update && sudo apt-get -y upgrade
@@ -46,17 +45,17 @@ sudo apt-get install -y nodejs
 #update npm
 sudo npm install npm -g
 
-#configure local npm
-su - $uname -c "npm set registry https://npm.blackpear.com"
-su - $uname -c "npm set $npma"
-su - $uname -c "npm set always-auth true"
+#install pm2
+sudo npm install pm2 -g
 
 #add user to run pm2 processes
 sudo adduser --system --group --shell /bin/bash --disabled-password pm2user
 su - pm2user -c "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cd ~/.ssh && ssh-keygen -f id_rsa -t rsa -N ''"
 
-#install pm2
-sudo npm install pm2 -g
+#configure local npm
+su - pm2user -c "npm set registry https://npm.blackpear.com"
+su - pm2user -c "npm set $npma"
+su - pm2user -c "npm set always-auth true"
 
 #configure pm2 to restart on server reboot
 su - pm2user -c "pm2 startup ubuntu -u pm2user"
@@ -122,16 +121,16 @@ su - pm2user -c "ssh-keyscan -t rsa github.com > ~/.ssh/known_hosts"
 su - pm2user -c "ssh-keyscan -t rsa blackpear.git.beanstalkapp.com >> ~/.ssh/known_hosts"
 
 #add ssh key to github
-su - pm2user -c "curl -u \"$gitu:$gitp\" --data '{\"title\":\"$uname\",\"key\":\"`cat ~/.ssh/id_rsa.pub`\"}' https://api.github.com/user/keys"
+su - pm2user -c "curl -u \"$gitu:$gitp\" --data '{\"title\":\"$host\",\"key\":\"`su - pm2user -c \"cat ~/.ssh/id_rsa.pub\"`\"}' https://api.github.com/user/keys"
 
 #add ssh key to beanstalk
-su - pm2user -c "curl -H \"Content-Type: application/json\" -u \"$beanu:$beanp\" --data '{\"public_key\": {\"name\": \"$uname\",\"content\": \"`cat ~/.ssh/id_rsa.pub`\"}}' https://blackpear.beanstalkapp.com/api/public_keys"
+su - pm2user -c "curl -H \"Content-Type: application/json\" -u \"$beanu:$beanp\" --data '{\"public_key\": {\"name\": \"$host\",\"content\": \"`su - pm2user -c \"cat ~/.ssh/id_rsa.pub\"`\"}}' https://blackpear.beanstalkapp.com/api/public_keys"
 
 #link pm2 to keymetrics if required
-#if [ "$keymet" = "y" ]
-#then
-#	su - pm2user -c "pm2 link $pm2pr $pm2pu $host"
-#fi
+if [ "$keymet" = "y" ]
+then
+	su - pm2user -c "pm2 link $pm2pr $pm2pu $host"
+fi
 
 #set pm2user shell to false
 sudo chsh --shell /bin/false pm2user
