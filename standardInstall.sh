@@ -131,6 +131,3 @@ if [ "$keymet" = "y" ]
 then
 	su - pm2user -c "pm2 link $pm2pr $pm2pu $host"
 fi
-
-#set pm2user shell to false
-sudo chsh --shell /bin/false pm2user
