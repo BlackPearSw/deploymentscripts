@@ -73,8 +73,11 @@ sudo update-rc.d disable-transparent-hugepages defaults
 #install pm2
 sudo npm install pm2 -g
 
+#add user to run pm2 processes
+sudo adduser --system --group --shell /bin/bash --disabled-password pm2user
+
 #Install pm2 server monitor
-su - $uname -c "pm2 install pm2-server-monit"
+su - pm2user -c "pm2 install pm2-server-monit"
 
 #mount data disk
 hdd="/dev/sdc"
@@ -98,15 +101,18 @@ sudo sed -i "/dbPath/s/var\/lib/datadrive/" /etc/mongod.conf
 sudo service mongod restart
 
 #Install pm2 mongodb module
-su - $uname -c "pm2 install pm2-mongodb"
+su - pm2user -c "pm2 install pm2-mongodb"
 
 #create autossh user and create empty authorised_keys file
 sudo adduser --system --group --shell /bin/bash --disabled-password autossh
 su - autossh -c "mkdir -p ~/.ssh && chmod 700 ~/.ssh && touch ~/.ssh/authorized_keys"
 sudo chsh --shell /bin/false autossh
 
+#set pm2user shell to false
+sudo chsh --shell /bin/false pm2user
+
 #link pm2 to keymetrics
 if [ "$keymet" = "y" ]
 then
-	su - $uname -c "pm2 link $pm2pr $pm2pu $host"
+	su - pm2user -c "pm2 link $pm2pr $pm2pu $host"
 fi

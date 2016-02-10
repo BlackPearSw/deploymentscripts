@@ -21,34 +21,6 @@ sshport=${18}
 #upgrade server install
 sudo apt-get update && sudo apt-get -y upgrade
 
-#create ssh tunnel to mongodb database
-if [ "$tunnel" = "y" ]
-then
-	sudo apt-get update
-	sudo apt-get install --yes sshpass
-	sudo adduser --system --group --shell /bin/bash --disabled-password autossh
-	su - autossh -c "mkdir -p ~/.ssh && chmod 700 ~/.ssh && ssh-keyscan -t rsa $dbhost > ~/.ssh/known_hosts && cd ~/.ssh && ssh-keygen -f id_rsa -t rsa -N ''"
-	su - autossh -c "cat ~/.ssh/id_rsa.pub | sshpass -p $dbpw ssh $dbuser@$dbhost \"sudo su -c 'cat >> /home/autossh/.ssh/authorized_keys'\""
-	sudo chsh --shell /bin/false autossh
-	sudo apt-get --purge remove --yes sshpass
-
-	#create autossh.sh script
-	sudo apt-get update
-	sudo apt-get install --yes autossh
-	sudo su -c "cat << EOF > /etc/init/autossh.conf
-description \"Start autossh to control ssh tunnel\"
-author \"Steve Reynolds\"
-start on (local-filesystems and net-device-up IFACE=eth0)
-stop on runlevel [016]
-setuid autossh
-respawn
-respawn limit 5 60
-exec autossh -M 0 -N -o \"ServerAliveInterval 60\" -o \"ServerAliveCountMax 3\" -L $sshport:localhost:27017 -i /home/autossh/.ssh/id_rsa autossh@$dbhost
-EOF"
-	sudo service autossh start
-fi
-
-: <<'COMMENT'
 #switch auto updates on for security updates
 sudo apt-get install -y unattended-upgrades
 sudo sed -i -e '$a\APT::Periodic::Unattended-Upgrade "1";' /etc/apt/apt.conf.d/10periodic
@@ -79,16 +51,20 @@ su - $uname -c "npm set registry https://npm.blackpear.com"
 su - $uname -c "npm set $npma"
 su - $uname -c "npm set always-auth true"
 
+#add user to run pm2 processes
+sudo adduser --system --group --shell /bin/bash --disabled-password pm2user
+su - pm2user -c "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cd ~/.ssh && ssh-keygen -f id_rsa -t rsa -N ''"
+
 #install pm2
 sudo npm install pm2 -g
 
 #configure pm2 to restart on server reboot
-su - $uname -c "pm2 startup ubuntu -u $uname"
-sudo su -c "env PATH=$PATH:/usr/bin pm2 startup ubuntu -u $uname --hp /home/$uname"
-su - $uname -c "pm2 save"
+su - pm2user -c "pm2 startup ubuntu -u pm2user"
+sudo su -c "env PATH=$PATH:/usr/bin pm2 startup ubuntu -u pm2user --hp /home/pm2user"
+su - pm2user -c "pm2 save"
 
 #Install pm2 server monitor
-su $uname -c "pm2 install pm2-server-monit"
+su - pm2user -c "pm2 install pm2-server-monit"
 
 #install nginx
 if [ "$nginx" = "y" ]
@@ -111,25 +87,51 @@ then
 	sudo rabbitmqctl set_user_tags blackpear administrator
 	sudo rabbitmqctl set_permissions blackpear ".*" ".*" ".*"
 	sudo rabbitmq-plugins enable rabbitmq_management
-	su $uname -c "pm2 install pm2-rabbitmq"
+	su - pm2user -c "pm2 install pm2-rabbitmq"
 fi
 
-#add hosts
-su - $uname -c "ssh-keyscan -t rsa github.com > ~/.ssh/known_hosts"
-su - $uname -c "ssh-keyscan -t rsa blackpear.git.beanstalkapp.com >> ~/.ssh/known_hosts"
+#create ssh tunnel to mongodb database
+if [ "$tunnel" = "y" ]
+then
+	sudo apt-get update
+	sudo apt-get install --yes sshpass
+	sudo adduser --system --group --shell /bin/bash --disabled-password autossh
+	su - autossh -c "mkdir -p ~/.ssh && chmod 700 ~/.ssh && ssh-keyscan -t rsa $dbhost > ~/.ssh/known_hosts && cd ~/.ssh && ssh-keygen -f id_rsa -t rsa -N ''"
+	su - autossh -c "cat ~/.ssh/id_rsa.pub | sshpass -p $dbpw ssh $dbuser@$dbhost \"sudo su -c 'cat >> /home/autossh/.ssh/authorized_keys'\""
+	sudo chsh --shell /bin/false autossh
+	sudo apt-get --purge remove --yes sshpass
 
-#create ssh key
-su - $uname -c "cd ~/.ssh && ssh-keygen -f id_rsa -t rsa -N ''"
+	#create autossh.sh script
+	sudo apt-get update
+	sudo apt-get install --yes autossh
+	sudo su -c "cat << EOF > /etc/init/autossh.conf
+description \"Start autossh to control ssh tunnel\"
+author \"Steve Reynolds\"
+start on (local-filesystems and net-device-up IFACE=eth0)
+stop on runlevel [016]
+setuid autossh
+respawn
+respawn limit 5 60
+exec autossh -M 0 -N -o \"ServerAliveInterval 60\" -o \"ServerAliveCountMax 3\" -L $sshport:localhost:27017 -i /home/autossh/.ssh/id_rsa autossh@$dbhost
+EOF"
+	sudo service autossh start
+fi
+
+#add github and beanstalk to known hosts
+su - pm2user -c "ssh-keyscan -t rsa github.com > ~/.ssh/known_hosts"
+su - pm2user -c "ssh-keyscan -t rsa blackpear.git.beanstalkapp.com >> ~/.ssh/known_hosts"
 
 #add ssh key to github
-su - $uname -c "curl -u \"$gitu:$gitp\" --data '{\"title\":\"$uname\",\"key\":\"`cat ~/.ssh/id_rsa.pub`\"}' https://api.github.com/user/keys"
+su - pm2user -c "curl -u \"$gitu:$gitp\" --data '{\"title\":\"$uname\",\"key\":\"`cat ~/.ssh/id_rsa.pub`\"}' https://api.github.com/user/keys"
 
 #add ssh key to beanstalk
-su - $uname -c "curl -H \"Content-Type: application/json\" -u \"$beanu:$beanp\" --data '{\"public_key\": {\"name\": \"$uname\",\"content\": \"`cat ~/.ssh/id_rsa.pub`\"}}' https://blackpear.beanstalkapp.com/api/public_keys"
+su - pm2user -c "curl -H \"Content-Type: application/json\" -u \"$beanu:$beanp\" --data '{\"public_key\": {\"name\": \"$uname\",\"content\": \"`cat ~/.ssh/id_rsa.pub`\"}}' https://blackpear.beanstalkapp.com/api/public_keys"
+
+#set pm2user shell to false
+sudo chsh --shell /bin/false pm2user
 
 #link pm2 to keymetrics if required
-if [ "$keymet" = "y" ]
-then
-	#su - $uname -c "pm2 link $pm2pr $pm2pu $host"
-fi
-COMMENT
+#if [ "$keymet" = "y" ]
+#then
+#	su - pm2user -c "pm2 link $pm2pr $pm2pu $host"
+#fi
