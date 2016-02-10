@@ -127,11 +127,11 @@ su - pm2user -c "curl -u \"$gitu:$gitp\" --data '{\"title\":\"$uname\",\"key\":\
 #add ssh key to beanstalk
 su - pm2user -c "curl -H \"Content-Type: application/json\" -u \"$beanu:$beanp\" --data '{\"public_key\": {\"name\": \"$uname\",\"content\": \"`cat ~/.ssh/id_rsa.pub`\"}}' https://blackpear.beanstalkapp.com/api/public_keys"
 
-#set pm2user shell to false
-sudo chsh --shell /bin/false pm2user
-
 #link pm2 to keymetrics if required
 #if [ "$keymet" = "y" ]
 #then
 #	su - pm2user -c "pm2 link $pm2pr $pm2pu $host"
 #fi
+
+#set pm2user shell to false
+sudo chsh --shell /bin/false pm2user

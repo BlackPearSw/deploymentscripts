@@ -108,11 +108,11 @@ sudo adduser --system --group --shell /bin/bash --disabled-password autossh
 su - autossh -c "mkdir -p ~/.ssh && chmod 700 ~/.ssh && touch ~/.ssh/authorized_keys"
 sudo chsh --shell /bin/false autossh
 
-#set pm2user shell to false
-sudo chsh --shell /bin/false pm2user
-
 #link pm2 to keymetrics
 if [ "$keymet" = "y" ]
 then
 	su - pm2user -c "pm2 link $pm2pr $pm2pu $host"
 fi
+
+#set pm2user shell to false
+sudo chsh --shell /bin/false pm2user
