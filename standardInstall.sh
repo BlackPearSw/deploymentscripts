@@ -72,6 +72,14 @@ then
 	sudo add-apt-repository --yes ppa:nginx/$nginx
 	sudo apt-get update
 	sudo apt-get install --yes nginx
+	su - pm2user -c "mkdir -p ~/sites-available"
+	sudo mv /etc/nginx/sites-enabled/default /home/pm2user/sites-available
+	sudo ln -s /home/pm2user/sites-available/default /etc/nginx/sites-enabled
+	sudo su -c "cat << EOF > /etc/sudoers.d/pm2user
+pm2user ALL=(ALL) NOPASSWD: /usr/sbin/service nginx start,/usr/sbin/service nginx stop,/usr/sbin/service nginx restart
+EOF"
+	chmod 0440 /etc/sudoers.d/pm2user
+	sudo service nginx restart
 fi
 
 #install RabbitMQ if required
