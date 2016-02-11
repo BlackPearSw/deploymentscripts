@@ -76,7 +76,7 @@ then
 	sudo mv /etc/nginx/sites-enabled/default /home/pm2user/sites-available
 	sudo ln -s /home/pm2user/sites-available/default /etc/nginx/sites-enabled
 	sudo su -c "cat << EOF > /etc/sudoers.d/pm2user
-pm2user ALL=(ALL) NOPASSWD: /usr/sbin/service nginx start,/usr/sbin/service nginx stop,/usr/sbin/service nginx restart
+pm2user ALL=(ALL) NOPASSWD: /usr/sbin/service nginx reload
 EOF"
 	chmod 0440 /etc/sudoers.d/pm2user
 	sudo service nginx restart
