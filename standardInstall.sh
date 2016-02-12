@@ -73,7 +73,8 @@ then
 	sudo apt-get update
 	sudo apt-get install --yes nginx
 	su - pm2user -c "mkdir -p ~/sites-available"
-	sudo mv /etc/nginx/sites-enabled/default /home/pm2user/sites-available
+	sudo mv /etc/nginx/sites-available/default /home/pm2user/sites-available
+	sudo rm /etc/nginx/sites-enabled/default
 	sudo ln -s /home/pm2user/sites-available/default /etc/nginx/sites-enabled
 	sudo su -c "cat << EOF > /etc/sudoers.d/pm2user
 pm2user ALL=(ALL) NOPASSWD: /usr/sbin/service nginx reload
