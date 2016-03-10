@@ -14,6 +14,7 @@ sudo sed -i -e '$a\APT::Periodic::Unattended-Upgrade "1";' /etc/apt/apt.conf.d/1
 #install ntp
 sudo apt-get update
 sudo apt-get install --yes ntp
+sudo timedatectl set-timezone Europe/London
 
 #install node
 sudo apt-get update
