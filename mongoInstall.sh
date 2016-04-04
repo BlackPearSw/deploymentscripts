@@ -80,14 +80,14 @@ sudo adduser --system --group --shell /bin/bash --disabled-password pm2user
 su - pm2user -c "pm2 install pm2-server-monit"
 
 #mount data disk
-hdd="/dev/sdc"
-sudo echo "n
-p
-1
-
-
-w
-"|sudo fdisk $hdd
+#hdd="/dev/sdc"
+#sudo echo "n
+#p
+#1
+#
+#
+#w
+#"|sudo fdisk $hdd
 #sudo mkfs -t ext4 /dev/sdc1
 #sudo mkdir /datadrive
 #sudo mount /dev/sdc1 /datadrive
