@@ -88,20 +88,20 @@ p
 
 w
 "|sudo fdisk $hdd
-sudo mkfs -t ext4 /dev/sdc1
-sudo mkdir /datadrive
-sudo mount /dev/sdc1 /datadrive
-sudo mkdir /datadrive/mongodb
-sudo chown mongodb:mongodb /datadrive/mongodb
+#sudo mkfs -t ext4 /dev/sdc1
+#sudo mkdir /datadrive
+#sudo mount /dev/sdc1 /datadrive
+#sudo mkdir /datadrive/mongodb
+#sudo chown mongodb:mongodb /datadrive/mongodb
 
 #update mongo config
-sudo sed -i "/dbPath/s/var\/lib/datadrive/" /etc/mongod.conf
+#sudo sed -i "/dbPath/s/var\/lib/datadrive/" /etc/mongod.conf
 
 #restart mongodb
-sudo service mongod restart
+#sudo service mongod restart
 
 #Install pm2 mongodb module
-su - pm2user -c "pm2 install pm2-mongodb"
+#su - pm2user -c "pm2 install pm2-mongodb"
 
 #create autossh user and create empty authorised_keys file
 sudo adduser --system --group --shell /bin/bash --disabled-password autossh
@@ -111,5 +111,5 @@ sudo chsh --shell /bin/false autossh
 #link pm2 to keymetrics
 if [ "$keymet" = "y" ]
 then
-	su - pm2user -c "pm2 link $pm2pr $pm2pu $host"
+#	su - pm2user -c "pm2 link $pm2pr $pm2pu $host"
 fi
