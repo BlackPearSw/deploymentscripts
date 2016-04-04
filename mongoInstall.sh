@@ -109,7 +109,7 @@ su - autossh -c "mkdir -p ~/.ssh && chmod 700 ~/.ssh && touch ~/.ssh/authorized_
 sudo chsh --shell /bin/false autossh
 
 #link pm2 to keymetrics
-if [ "$keymet" = "y" ]
-then
+#if [ "$keymet" = "y" ]
+#then
 #	su - pm2user -c "pm2 link $pm2pr $pm2pu $host"
-fi
+#fi
