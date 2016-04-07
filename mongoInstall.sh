@@ -80,28 +80,32 @@ sudo adduser --system --group --shell /bin/bash --disabled-password pm2user
 su - pm2user -c "pm2 install pm2-server-monit"
 
 #mount data disk
-#hdd="/dev/sdc"
-#sudo echo "n
-#p
-#1
-#
-#
-#w
-#"|sudo fdisk $hdd
-#sudo mkfs -t ext4 /dev/sdc1
-#sudo mkdir /datadrive
-#sudo mount /dev/sdc1 /datadrive
-#sudo mkdir /datadrive/mongodb
-#sudo chown mongodb:mongodb /datadrive/mongodb
+sudo apt-get update
+sudo apt-get install cryptsetup
+hdd="/dev/sdc"
+sudo echo "n
+p
+1
+
+
+w
+"|sudo fdisk $hdd
+sudo su -c "echo \"JKaB7ian4DTzUM\"|cryptsetup -y -v luksFormat /dev/sdc1"
+sudo su -c "echo \"JKaB7ian4DTzUM\"|cryptsetup luksOpen /dev/sdc1 datadrive"
+sudo mkfs -t ext4 /dev/mapper/datadrive
+sudo mkdir /datadrive
+sudo mount /dev/mapper/datadrive /datadrive
+sudo mkdir /datadrive/mongodb
+sudo chown mongodb:mongodb /datadrive/mongodb
 
 #update mongo config
-#sudo sed -i "/dbPath/s/var\/lib/datadrive/" /etc/mongod.conf
+sudo sed -i "/dbPath/s/var\/lib/datadrive/" /etc/mongod.conf
 
 #restart mongodb
-#sudo service mongod restart
+sudo service mongod restart
 
 #Install pm2 mongodb module
-#su - pm2user -c "pm2 install pm2-mongodb"
+su - pm2user -c "pm2 install pm2-mongodb"
 
 #create autossh user and create empty authorised_keys file
 sudo adduser --system --group --shell /bin/bash --disabled-password autossh
