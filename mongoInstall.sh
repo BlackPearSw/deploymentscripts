@@ -3,6 +3,7 @@ keymet=$2
 pm2pr=$3
 pm2pu=$4
 host=$5
+encpw=$6
 
 #upgrade server install
 sudo apt-get update && sudo apt-get -y upgrade
@@ -90,8 +91,8 @@ p
 
 w
 "|sudo fdisk $hdd
-sudo su -c "echo \"JKaB7ian4DTzUM\"|cryptsetup -y -v luksFormat /dev/sdc1"
-sudo su -c "echo \"JKaB7ian4DTzUM\"|cryptsetup luksOpen /dev/sdc1 datadrive"
+sudo su -c "echo $encpw|cryptsetup -y -v luksFormat /dev/sdc1"
+sudo su -c "echo $encpw|cryptsetup luksOpen /dev/sdc1 datadrive"
 sudo mkfs -t ext4 /dev/mapper/datadrive
 sudo mkdir /datadrive
 sudo mount /dev/mapper/datadrive /datadrive
