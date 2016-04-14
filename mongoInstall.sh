@@ -104,9 +104,9 @@ sudo chown mongodb:mongodb /datadrive/mongodb
 sudo dd if=/dev/urandom of=/root/keyfile bs=1024 count=4
 sudo chmod 0400 /root/keyfile
 sudo su -c "echo $encpw|cryptsetup luksAddKey /dev/$ldev /root/keyfile"
-ddmnt = "/dev/mapper/datadrive   /datadrive           ext4     defaults    1       2"
+ddmnt="/dev/mapper/datadrive   /datadrive           ext4     defaults    1       2"
 sudo su -c "echo $ddmnt >> /etc/fstab"
-decryt = "datadrive                /dev/$ldev         /root/keyfile         luks"
+decryt="datadrive                /dev/$ldev         /root/keyfile         luks"
 sudo su -c "echo $decryt >> /etc/crypttab"
 
 #update mongo config
@@ -124,7 +124,7 @@ su - autossh -c "mkdir -p ~/.ssh && chmod 700 ~/.ssh && touch ~/.ssh/authorized_
 sudo chsh --shell /bin/false autossh
 
 #link pm2 to keymetrics
-#if [ "$keymet" = "y" ]
-#then
-#	su - pm2user -c "pm2 link $pm2pr $pm2pu $host"
-#fi
+if [ "$keymet" = "y" ]
+then
+	su - pm2user -c "pm2 link $pm2pr $pm2pu $host"
+fi
