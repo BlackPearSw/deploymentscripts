@@ -105,9 +105,9 @@ sudo dd if=/dev/urandom of=/root/keyfile bs=1024 count=4
 sudo chmod 0400 /root/keyfile
 sudo su -c "echo $encpw|cryptsetup luksAddKey /dev/$ldev /root/keyfile"
 ddmnt="/dev/mapper/datadrive   /datadrive           ext4     defaults    1       2"
-sudo su -c "echo $ddmnt >> /etc/fstab"
-decryt="datadrive                /dev/$ldev         /root/keyfile         luks"
-sudo su -c "echo $decryt >> /etc/crypttab"
+sudo su -c "echo \"$ddmnt\" >> /etc/fstab"
+decryt="datadrive                $ldev         /root/keyfile         luks"
+sudo su -c "echo \"$decryt\" >> /etc/crypttab"
 
 #update mongo config
 sudo sed -i "/dbPath/s/var\/lib/datadrive/" /etc/mongod.conf
