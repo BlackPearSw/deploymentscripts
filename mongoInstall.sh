@@ -4,6 +4,7 @@ pm2pr=$3
 pm2pu=$4
 host=$5
 encpw=$6
+hdd=$7
 
 #upgrade server install
 sudo apt-get update && sudo apt-get -y upgrade
@@ -81,9 +82,9 @@ sudo adduser --system --group --shell /bin/bash --disabled-password pm2user
 su - pm2user -c "pm2 install pm2-server-monit"
 
 #mount data disk
+ldev=$hdd"1"
 sudo apt-get update
 sudo apt-get install cryptsetup
-hdd="/dev/sdc"
 sudo echo "n
 p
 1
@@ -91,13 +92,22 @@ p
 
 w
 "|sudo fdisk $hdd
-sudo su -c "echo $encpw|cryptsetup -y -v luksFormat /dev/sdc1"
-sudo su -c "echo $encpw|cryptsetup luksOpen /dev/sdc1 datadrive"
+sudo su -c "echo $encpw|cryptsetup -y -v luksFormat $ldev"
+sudo su -c "echo $encpw|cryptsetup luksOpen $ldev datadrive"
 sudo mkfs -t ext4 /dev/mapper/datadrive
 sudo mkdir /datadrive
 sudo mount /dev/mapper/datadrive /datadrive
 sudo mkdir /datadrive/mongodb
 sudo chown mongodb:mongodb /datadrive/mongodb
+
+#auto mount encrypted drive
+sudo dd if=/dev/urandom of=/root/keyfile bs=1024 count=4
+sudo chmod 0400 /root/keyfile
+sudo su -c "echo $encpw|cryptsetup luksAddKey /dev/$ldev /root/keyfile"
+ddmnt = "/dev/mapper/datadrive   /datadrive           ext4     defaults    1       2"
+sudo su -c "echo $ddmnt >> /etc/fstab"
+decryt = "datadrive                /dev/$ldev         /root/keyfile         luks"
+sudo su -c "echo $decryt >> /etc/crypttab"
 
 #update mongo config
 sudo sed -i "/dbPath/s/var\/lib/datadrive/" /etc/mongod.conf
@@ -114,7 +124,7 @@ su - autossh -c "mkdir -p ~/.ssh && chmod 700 ~/.ssh && touch ~/.ssh/authorized_
 sudo chsh --shell /bin/false autossh
 
 #link pm2 to keymetrics
-if [ "$keymet" = "y" ]
-then
-	su - pm2user -c "pm2 link $pm2pr $pm2pu $host"
-fi
+#if [ "$keymet" = "y" ]
+#then
+#	su - pm2user -c "pm2 link $pm2pr $pm2pu $host"
+#fi
