@@ -139,10 +139,10 @@ su - pm2user -c "curl -u \"$gitu:$gitp\" --data '{\"title\":\"$host\",\"key\":\"
 su - pm2user -c "curl -H \"Content-Type: application/json\" -u \"$beanu:$beanp\" --data '{\"public_key\": {\"name\": \"$host\",\"content\": \"`su - pm2user -c \"cat ~/.ssh/id_rsa.pub\"`\"}}' https://blackpear.beanstalkapp.com/api/public_keys"
 
 #link pm2 to keymetrics if required
-#if [ "$keymet" = "y" ]
-#then
-#	su - pm2user -c "pm2 link $pm2pr $pm2pu $host"
-#fi
+if [ "$keymet" = "y" ]
+then
+	su - pm2user -c "pm2 link $pm2pr $pm2pu $host"
+fi
 
 #configure firewall
 sudo apt-get update
@@ -153,11 +153,11 @@ sudo ufw allow 22,443,43554/tcp
 sudo ufw allow out 22,80,443,43554/tcp
 sudo ufw allow 123/udp
 sudo ufw allow out 123/udp
-if ["$incpts" != "*"]
+if [ "$incpts" != "*" ]
 then
 	sudo ufw allow $incpts/tcp
 fi
-if ["$outpts" != "*"]
+if [ "$outpts" != "*" ]
 then
 	sudo ufw allow out $outpts/tcp
 fi
