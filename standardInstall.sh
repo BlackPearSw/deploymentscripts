@@ -16,6 +16,8 @@ dbhost=${14}
 dbuser=${15}
 dbpw=${16}
 sshport=${17}
+incpts=${18}
+outpts=${19}
 
 #upgrade server install
 sudo apt-get update && sudo apt-get -y upgrade
@@ -141,3 +143,22 @@ if [ "$keymet" = "y" ]
 then
 	su - pm2user -c "pm2 link $pm2pr $pm2pu $host"
 fi
+
+#configure firewall
+sudo apt-get update
+sudo apt-get install ufw
+sudo ufw default deny incoming
+sudo ufw default deny outgoing
+sudo ufw allow 22,443,43554/tcp
+sudo ufw allow out 22,80,443,43554/tcp
+sudo ufw allow 123/udp
+sudo ufw allow out 123/udp
+if ["$incpts" != "*"]
+then
+	sudo ufw allow $incpts/tcp
+fi
+if ["$outpts" != "*"]
+then
+	sudo ufw allow out $outpts/tcp
+fi
+sudo ufw --force enable
