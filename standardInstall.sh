@@ -139,10 +139,10 @@ su - pm2user -c "curl -u \"$gitu:$gitp\" --data '{\"title\":\"$host\",\"key\":\"
 su - pm2user -c "curl -H \"Content-Type: application/json\" -u \"$beanu:$beanp\" --data '{\"public_key\": {\"name\": \"$host\",\"content\": \"`su - pm2user -c \"cat ~/.ssh/id_rsa.pub\"`\"}}' https://blackpear.beanstalkapp.com/api/public_keys"
 
 #link pm2 to keymetrics if required
-if [ "$keymet" = "y" ]
-then
-	su - pm2user -c "pm2 link $pm2pr $pm2pu $host"
-fi
+#if [ "$keymet" = "y" ]
+#then
+#	su - pm2user -c "pm2 link $pm2pr $pm2pu $host"
+#fi
 
 #configure firewall
 sudo apt-get update
