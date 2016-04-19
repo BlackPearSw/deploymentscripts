@@ -134,7 +134,7 @@ sudo apt-get install ufw
 sudo ufw default deny incoming
 sudo ufw default deny outgoing
 sudo ufw allow 22,43554/tcp
-sudo ufw allow out 22,80,443,43554/tcp
+sudo ufw allow out 53,80,443,43554/tcp
 sudo ufw allow 123/udp
-sudo ufw allow out 123/udp
+sudo ufw allow out 53,80,123,443/udp
 sudo ufw --force enable
