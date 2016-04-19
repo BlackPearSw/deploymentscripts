@@ -137,3 +137,4 @@ sudo ufw allow 22,43554/tcp
 sudo ufw allow out 22,80,443,43554/tcp
 sudo ufw allow 123/udp
 sudo ufw allow out 123/udp
+sudo ufw --force enable
