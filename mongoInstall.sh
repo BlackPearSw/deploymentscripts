@@ -1,10 +1,9 @@
-privip=$1
-keymet=$2
-pm2pr=$3
-pm2pu=$4
-host=$5
-encpw=$6
-hdd=$7
+keymet=$1
+pm2pr=$2
+pm2pu=$3
+host=$4
+encpw=$5
+hdd=$6
 
 #upgrade server install
 sudo apt-get update && sudo apt-get -y upgrade
