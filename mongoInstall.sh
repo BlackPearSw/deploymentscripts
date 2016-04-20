@@ -133,7 +133,11 @@ sudo apt-get update
 sudo apt-get install ufw
 sudo ufw default deny incoming
 sudo ufw default deny outgoing
-sudo ufw allow 22,43554/tcp
+sudo ufw allow 22/tcp
+sudo ufw allow from 62.210.94.153 to any port 43554
+sudo ufw allow from 62.210.100.99 to any port 43554
+sudo ufw allow from 62.210.101.249 to any port 43554
+sudo ufw allow from 195.154.156.78 to any port 43554
 sudo ufw allow out 53,80,443,43554/tcp
 sudo ufw allow 123/udp
 sudo ufw allow out 53,80,123,443/udp
