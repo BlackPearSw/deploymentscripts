@@ -154,7 +154,7 @@ sudo ufw allow from 62.210.94.153 to any port 43554
 sudo ufw allow from 62.210.100.99 to any port 43554
 sudo ufw allow from 62.210.101.249 to any port 43554
 sudo ufw allow from 195.154.156.78 to any port 43554
-sudo ufw allow out 22,53,80,443,9418,43554/tcp
+sudo ufw allow out 22,53,80,443,587,9418,43554/tcp
 sudo ufw allow 123/udp
 sudo ufw allow out 53,80,123,443/udp
 if [ "$incpts" != "*" ]
