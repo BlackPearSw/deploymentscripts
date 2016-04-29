@@ -83,7 +83,7 @@ su - pm2user -c "pm2 install pm2-server-monit"
 #mount data disk
 ldev=$hdd"1"
 sudo apt-get update
-sudo apt-get install cryptsetup
+sudo apt-get install -y cryptsetup
 sudo echo "n
 p
 1
