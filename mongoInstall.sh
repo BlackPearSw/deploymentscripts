@@ -35,7 +35,7 @@ sudo apt-get -y update
 #Install Mongo DB
 sudo apt-get install -y mongodb-org
 
-#Disable THP for Mongo DB
+#Disable THP for Mongo DB (this doesn't quite work, needs updating, replace on db server with txt)
 sudo su -c "cat << EOF > /etc/init.d/disable-transparent-hugepages
 #!/bin/sh
 ### BEGIN INIT INFO
