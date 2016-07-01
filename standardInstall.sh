@@ -93,7 +93,7 @@ then
 	wget https://www.rabbitmq.com/rabbitmq-signing-key-public.asc
 	sudo apt-key add rabbitmq-signing-key-public.asc
 	sudo apt-get update
-	sudo apt-get install -y rabbitmq-server
+	sudo apt-get install -y --force-yes rabbitmq-server
 	sudo rabbitmqctl add_user blackpear $rabbitu
 	sudo rabbitmqctl set_user_tags blackpear administrator
 	sudo rabbitmqctl set_permissions blackpear ".*" ".*" ".*"
